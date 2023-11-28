@@ -15,22 +15,8 @@ class TransaksiController extends Controller
     } 
     
     public function chart(){
-        $transaksi = Transaksi::select(DB::raw('count(*) as user_count'), 'id_user')->groupBy('id_user')->get();
-        $user = User::pluck('name');
+        $transaksi = Transaksi::select(DB::raw('count(*) as user_count'), 'id_user')->with('user')->groupBy('id_user')->get();
         
-        $admin = $transaksi[0]->user_count;
-        $user = $transaksi[1]->user_count;
-        // dd($user);
-
-        // $data = [];
-        // foreach ($transaksi as $v) {
-        //     // $data =+ [
-                
-
-
-        //     // ];
-        // }
-
-        return view('pages.transaksi-grafis', compact('admin', 'user'));
+        return view('pages.transaksi-grafis', compact('transaksi'));
     } 
 }

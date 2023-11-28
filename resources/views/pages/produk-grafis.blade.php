@@ -40,9 +40,19 @@
     <script>
         $(document).ready(function() {
 
-            const a = {{ Js::from($produk_jenis) }}
+            const js = {{ Js::from($produk) }}
 
-            // Data retrieved from https://gs.statcounter.com/browser-market-share#monthly-202201-202201-bar
+            myArray = [];
+            
+            // Tambah data ke dalam chart
+            $.each(js, function(i, v) {
+                
+                data = {};
+                data['name'] = v.jenis
+                data['y'] = v.total
+                myArray.push(data)
+
+            });
 
             // Create the chart
             Highcharts.chart('produk', {
@@ -63,7 +73,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Total percent market share'
+                        text: 'Total Produk tiap kategori'
                     }
 
                 },
@@ -77,35 +87,7 @@
                 series: [{
                     name: 'Produk',
                     colorByPoint: true,
-                    data: [{
-                            name: 'SmartPhone',
-                            y: 63.06,
-                        },
-                        {
-                            name: 'Laptop',
-                            y: 19.84,
-                        },
-                        {
-                            name: 'Firefox',
-                            y: 4.18,
-                        },
-                        {
-                            name: 'Edge',
-                            y: 4.12,
-                        },
-                        {
-                            name: 'Opera',
-                            y: 2.33,
-                        },
-                        {
-                            name: 'Internet Explorer',
-                            y: 0.45,
-                        },
-                        {
-                            name: 'Other',
-                            y: 1.582,
-                        }
-                    ]
+                    data: myArray
                 }]
             });
 

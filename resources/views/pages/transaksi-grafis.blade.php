@@ -40,16 +40,26 @@
     <script>
         $(document).ready(function() {
 
-            Highcharts.chart('container', {
+            js = {{ Js::from($transaksi) }}
+
+            myArray = [];
+            
+            // Tambah data ke dalam chart
+            $.each(js, function(i, v) {
+                
+                data = {};
+                data['name'] = v.user.name
+                data['y'] = v.user_count
+                myArray.push(data)
+
+            });
+
+            var chart = Highcharts.chart('container', {
                 chart: {
                     type: 'pie'
                 },
                 title: {
-                    text: 'Egg Yolk Composition'
-                },
-                
-                subtitle: {
-                    text: 'Source:<a href="https://www.mdpi.com/2072-6643/11/3/684/htm" target="_default">MDPI</a>'
+                    text: 'Data Transaksi Tiap User'
                 },
                 plotOptions: {
                     series: {
@@ -77,15 +87,7 @@
                 series: [{
                     name: 'Percentage',
                     colorByPoint: true,
-                    data: [{
-                            name: 'admin',
-                            y: {{ $admin }}
-                        },
-                        {
-                            name: 'user',
-                            y: {{ $user }}
-                        }
-                    ]
+                    data: myArray
                 }]
             });
 
